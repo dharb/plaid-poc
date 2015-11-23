@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  root to: 'visitors#index'
+  root to: 'users#index'
   devise_for :users
-  resources :users
+  resources :users do
+    member do
+      get :select_bank
+      get :institutions
+    end
+  end
 end

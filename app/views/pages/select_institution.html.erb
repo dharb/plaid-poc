@@ -1,0 +1,27 @@
+<script type="text/javascript">
+$.ajax({
+  dataType: "json",
+  url: 'https://tartan.plaid.com/institutions',
+  type: 'GET'
+}).done(function(data) {
+  alert("done");
+  $.each(data, function(i, item) {
+    $('main').append(item);
+  });
+});
+</script>
+<script src="https://cdn.plaid.com/link/stable/link-initialize.js" data-long-tail="true"></script>
+<script>
+var sandboxHandler = Plaid.create({
+  clientName: 'demo',
+  env: 'tartan',
+  product: 'auth',
+  key: 'test_key',
+  onSuccess: function(token) {
+    window.location = '/accounts.html?public_token=' + token;
+  },
+});
+document.getElementById('sandboxLinkButton').onclick = function() {
+  sandboxHandler.open();
+};
+</script>

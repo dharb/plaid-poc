@@ -1,0 +1,91 @@
+<script src="https://cdn.plaid.com/link/stable/link-initialize.js"></script>
+<script>
+var linkHandler = Plaid.create({
+  env: 'tartan',
+  clientName: 'WorthFM',
+  key: 'test_key',
+  product: 'auth',
+  // To use Link with longtail institutions on Connect, set the
+  // 'longTail' option to true:
+  onLoad: function() {
+    // The Link module finished loading.
+  },
+  onSuccess: function(public_token) {
+    // Send your public_token to your app server here.
+  },
+  onExit: function() {
+    // The user exited the Link flow.
+  },
+});
+
+$(document).on('click', '.institute-btn', function(e){
+  linkHandler.open($(this).data('type'));
+});
+
+$(document).ready(function() {
+  function formatBank (bank) {
+    var markup = "<div class='select2-result-bank clearfix' data-type='"+bank.id+"'>";
+    if (bank.logo){
+      markup += "<div class='select2-result-bank_logo'><img src='data:image/png;base64, " + bank.logo + "' /></div>";
+    }
+    markup += "<div class='select2-result-bank_meta'>" +
+      "<div class='select2-result-bank_title'>" + bank.name + "</div></div></div>";
+    return markup;
+  }
+  function formatBankSelection (bank) {
+    return bank.name || bank.id;
+  }
+  $("#bank_select").select2({
+    theme: "bootstrap",
+    minimumInputLength: 1,
+    width: "resolve",
+    allowClear: false,
+    ajax: {
+      url: "https://tartan.plaid.com/institutions/search",
+      dataType: 'json',
+      quietMillis: 200,
+      data: function (params) {
+        return {
+          q: params.term, // search term
+          p: 'auth'
+        };
+      },
+      processResults: function (data) {
+        return {
+          results: data
+        };
+      },
+      cache: true
+    },
+    language: {
+      noResults: function (params) {
+        return "Looks like we don't have that bank yet. Search again or <a href='#'>enter your banking information.</a>";
+      }
+    },
+    escapeMarkup: function(markup) { return markup;},
+    templateResult: formatBank,
+    templateSelection: formatBankSelection
+  }).on("change", function(e){
+    linkHandler.open($('#bank_select').val());
+  });
+});
+
+</script>
+<div class="container">
+  <h1>Connect to Your Bank</h1>
+  <div class="row list-row">
+    <% @institutions.each do |x|%>
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6 institute-btn" data-type="<%= x.type %>">
+        <%= image_tag x.type, alt: x.name %>
+        <p><%= x.name %></p>
+      </div>
+    <% end %>
+  </div>
+  <div class="row bank-search">
+    <div class="col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+      <select id="bank_select">
+        <option value="Find my bank" selected="selected">Find my bank</option>
+      </select>
+    </div>
+  </div>
+</div>

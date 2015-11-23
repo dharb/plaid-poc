@@ -11,5 +11,90 @@
  * file per style scope.
  *
  *= require_tree .
+ *= require select2
+ *= require select2-bootstrap
  *= require_self
  */
+
+h1{
+  text-align: center;
+  margin: 30px 0 20px;
+}
+.list-row{
+  padding: 10px 0;
+  margin-bottom: 50px;
+}
+.institute-btn{
+  cursor: pointer;
+  @media(min-width: 768px) {
+    min-height: 225px;
+  }
+  @media(max-width: 480px) {
+    min-height: 210px;
+  }
+  img{
+    padding: 10px 0;
+  }
+  p{
+    text-align: center;
+    font-size: 24px;
+    line-height: 26px;
+    font-weight: bold;
+    @media(max-width: 480px) {
+      font-size: 18px;
+      line-height: 20px;
+    }
+  }
+}
+.bank-search{
+  height: 500px;
+}
+#bank_select{
+  width: 100%;
+}
+.select2-selection__arrow{
+  display: none;
+}
+.select2-container--bootstrap .select2-selection{
+  height: 50px;
+  border-radius: 0px;
+  padding: 10px 15px;
+  font-size: 22px;
+}
+.select2-container--bootstrap.select2-container--open .select2-selection{
+  box-shadow: 0 0 transparent;
+}
+.select2-container--bootstrap .select2-dropdown{
+  margin-top: -49px;
+  border-radius: 0;
+}
+.select2-container--bootstrap .select2-dropdown--above{
+  margin-top: 83px;
+  border-bottom: 1px solid #66AFE9;
+}
+.select2-search--dropdown{
+  padding: 0;
+}
+.select2-container--bootstrap .select2-search--dropdown .select2-search__field{
+  border-radius: 0;
+  padding: 10px 15px;
+  height: 50px;
+  font-size: 22px;
+  border-width: 0 0 1px 0;
+}
+.select2-container--bootstrap .select2-results__option[aria-disabled=true]{
+  display: none;
+}
+.select2-result-bank_logo{
+  float: left;
+  width: 40px;
+  margin-right: 10px;
+}
+.select2-result-bank_meta{
+  margin-left: 50px;
+  font-size: 20px;
+  line-height: 40px;
+}
+.select2-result-bank{
+  padding: 0;
+}
