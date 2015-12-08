@@ -10,8 +10,8 @@ var linkHandler = Plaid.create({
   onLoad: function() {
     // The Link module finished loading.
   },
-  onSuccess: function(public_token) {
-    // Send your public_token to your app server here.
+  onSuccess: function(token) {
+    window.location.pathname = 'users/<%=current_user.id%>/funding?public_token=' + token;
   },
   onExit: function() {
     // The user exited the Link flow.

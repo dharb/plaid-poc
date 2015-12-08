@@ -1,3 +1,11 @@
-<h3>User</h3>
-<p>Name: <%= @user.name if @user.name %></p>
-<p>Email: <%= @user.email if @user.email %></p>
+<div class="container funding-container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h1>Account Info</h1>
+      <p>Name: <%= @user.name if @user.name %></p>
+      <p>Email: <%= @user.email if @user.email %></p>
+      <p>Public Token: <%= @user.plaid_public_token if @user.plaid_public_token %></p>
+      <p>Access Token: <%= @user.plaid_access_token if @user.plaid_access_token %></p>
+    </div>
+  </div>
+</div>

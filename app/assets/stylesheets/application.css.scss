@@ -98,3 +98,93 @@ h1{
 .select2-result-bank{
   padding: 0;
 }
+// funding page
+.funding-container{
+  h1{
+    margin-bottom: 10px;
+  }
+  h3{
+    text-align: center;
+    color: #777;
+    font-size: 22px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+  h4{
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .btn-acct{
+    font-size: 28px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    text-align: left;
+    border: 1px solid #D8D8D8;
+    white-space: normal;
+  }
+  .acct-name{
+    display: inline;
+    color: #6c6c6c;
+    position: relative;
+  }
+  .acct-balance{
+    float: right;
+    text-align: right;
+    color: #939393;
+    position: relative;
+  }
+  hr{
+    border-color: #D8D8D8;
+    border-width: 5px;
+    @media(max-width: 767px){
+      margin: 30px -10px 20px;
+    }
+    @media(min-width: 768px){
+      margin: 40px -50px 20px;
+    }
+  }
+  .total{
+    padding: 0 20px;
+    h2{
+      font-size: 28px;
+      color: #6c6c6c;
+      margin-top: 0;
+    }
+    .total-assets{
+      float: left;
+    }
+    .total-dollars{
+      float: right;
+    }
+  }
+  .fund-amount{
+    border: 2px solid #D8D8D8;
+    padding: 15px 20px 10px;
+    font-size: 20px;
+    .input-group-addon{
+      border-width: 0;
+      border-radius: 0;
+      border-color: #D8D8D8;
+      padding: 6px;
+      color: #939393;
+      font-style: italic;
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+  .fund-input{
+    border-width: 0 0 2px 0;
+    border-radius: 0px;
+    border-color: #D8D8D8;
+    border-style: solid;
+    box-shadow: none;
+    background: transparent;
+    color: #939393;
+    font-size: 20px;
+    line-height: 30px;
+    padding-left: 6px;
+    padding-bottom: 0;
+    height: 36px;
+  }
+}
