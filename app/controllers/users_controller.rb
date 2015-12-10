@@ -18,17 +18,35 @@ class UsersController < ApplicationController
     unless @user == current_user
       redirect_to :back, alert: "Access denied."
     end
-    if @user.plaid_access_token.blank? && params[:public_token].present?
-      public_token = params[:public_token]
-      exchange_token_response = Plaid.exchange_token(public_token) rescue nil
-      if exchange_token_response.nil?
-        access_token = nil
+    if @user.primary_account.present?
+      if params[:public_token].present?
+        public_token = params[:public_token]
+        exchange_token_response = Plaid.exchange_token(public_token) rescue nil
+        if exchange_token_response.nil?
+          access_token = nil
+        else
+          access_token = exchange_token_response.access_token
+          @bank_account = @user.bank_accounts.where(plaid_public_token: public_token, plaid_access_token: access_token).first_or_create!
+          @bank_account.save
+        end
       else
-        access_token = exchange_token_response.access_token
-        @user.update_attributes(plaid_access_token: access_token, plaid_public_token: public_token)
+        @bank_account = @user.primary_account
+        access_token = @bank_account.plaid_access_token
       end
     else
-      access_token = @user.plaid_access_token
+      if params[:public_token].present?
+        public_token = params[:public_token]
+        exchange_token_response = Plaid.exchange_token(public_token) rescue nil
+        if exchange_token_response.nil?
+          access_token = nil
+        else
+          access_token = exchange_token_response.access_token
+          @bank_account = @user.bank_accounts.build(plaid_public_token: public_token, plaid_access_token: access_token, primary: true)
+          @bank_account.save
+        end
+      else
+        redirect_to :back, alert: "Something went wrong, please try again."
+      end
     end
     if access_token.present?
       plaid_user = Plaid.set_user(access_token, ['auth'])

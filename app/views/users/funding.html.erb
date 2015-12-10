@@ -1,39 +1,57 @@
+<script type="text/javascript">
+$(document).on('click', '.btn-acct', function(e){
+  if (!$(this).hasClass('active')){
+    $('#account_id').val($(this).data("id"));
+    $('.btn-acct').removeClass('active');
+    $(this).addClass('active');
+  }
+});
+$(document).ready({
+  $('.edit_bank_account').on("ajax:success", function(e, data, status, xhr){
+    alert("success!");
+  });
+});
+</script>
 <div class="container funding-container">
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <h1>Connect to Your Bank</h1>
-      <h3>You bank account has been successfully linked!</h3>
-      <h4>How much do you initially want to fund?</h4>
-      <div class="fund-amount">
-        <div class="input-group">
-          <span class="input-group-addon">$</span>
-          <input type="text" class="form-control fund-input" aria-label="Amount (to the nearest dollar)" autofocus />
-          <span class="input-group-addon">.00</span>
+  <%= simple_form_for @bank_account, remote: true do |f| %>
+    <input type="hidden" name="bank_account[account_id]" id="account_id" />
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <h1>Connect to Your Bank</h1>
+        <h3>You bank account has been successfully linked!</h3>
+        <h4>How much do you initially want to fund?</h4>
+        <div class="fund-amount">
+          <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input type="text" name="bank_account[funding_pending_amount]" class="form-control fund-input" aria-label="Amount (to the nearest dollar)" autofocus />
+            <span class="input-group-addon">.00</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <h4>Which account do you want to fund from?</h4>
-      <% sum = 0 %>
-      <% @accounts.each do |acct| %>
-        <% if acct[:type] == 'depository' %>
-          <% balance = acct[:balance][:available].nil? ? acct[:balance][:current] : acct[:balance][:available] %>
-        <% else %>
-          <% balance = acct[:balance][:current] %>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <h4>Which account would you like to fund from?</h4>
+        <% sum = 0 %>
+        <% @accounts.each do |acct| %>
+          <% if acct[:type] == 'depository' %>
+            <% balance = acct[:balance][:available].nil? ? acct[:balance][:current] : acct[:balance][:available] %>
+          <% else %>
+            <% balance = acct[:balance][:current] %>
+          <% end %>
+          <% sum += balance %>
+          <div class="btn btn-block btn-default btn-acct" data-id="<%= acct[:account_id]%>" data-name="<%= acct[:meta]["name"]%>">
+            <span class="acct-name"><%= acct[:meta]["name"] %></span>
+            <span class="acct-balance">$<%= balance %></span>
+          </div>
         <% end %>
-        <% sum += balance %>
-        <div class="btn btn-block btn-default btn-acct" data-id="<%= acct[:account_id]%>">
-          <span class="acct-name"><%= acct[:meta]["name"] %></span>
-          <span class="acct-balance">$<%= balance %></span>
+        <hr>
+        <div class="total">
+          <h2 class="total-assets">Total Assets</h2>
+          <h2 class="total-dollars">$<%= sum %></h2>
         </div>
-      <% end %>
-      <hr>
-      <div class="total">
-        <h2 class="total-assets">Total Assets</h2>
-        <h2 class="total-dollars">$<%= sum %></h2>
       </div>
     </div>
-  </div>
+    <%= f.submit %>
+  <% end %>
 </div>

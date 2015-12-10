@@ -4,8 +4,13 @@
       <h1>Account Info</h1>
       <p>Name: <%= @user.name if @user.name %></p>
       <p>Email: <%= @user.email if @user.email %></p>
-      <p>Public Token: <%= @user.plaid_public_token if @user.plaid_public_token %></p>
-      <p>Access Token: <%= @user.plaid_access_token if @user.plaid_access_token %></p>
+      <% @user.bank_accounts.each do |f| %>
+        <hr>
+        <p>Account ID: <%= f.account_id %></p>
+        <p>Funding Pending Amount: $<%= f.funding_pending_amount %></p>
+        <p>Public Token: <%= f.plaid_public_token %></p>
+        <p>Access Token: <%= f.plaid_access_token %></p>
+      <% end %>
     </div>
   </div>
 </div>

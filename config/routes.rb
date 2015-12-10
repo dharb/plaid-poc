@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     member do
       get :select_bank
       get :funding
+      get :accounts
     end
   end
+  resources :bank_accounts, only: [:create,:update]
 end
